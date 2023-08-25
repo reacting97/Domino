@@ -1,0 +1,28 @@
+package com.example.demo.member;
+
+import java.util.ArrayList;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+@Service
+public class MemberService {
+	
+	@Autowired
+	private MemberDao dao;
+	
+	public MemberDto join(MemberDto dto) {
+		Member vo = dao.save(new Member(dto.getId(), dto.getPwd(), dto.getStorename(), dto.getName(), dto.getEmail(), dto.getPhone()));
+		return new MemberDto(vo.getId(), vo.getPwd(), vo.getStorename(), vo.getName(), vo.getEmail(), vo.getPhone());
+	}
+	
+	public ArrayList<MemberDto> getAll(){
+		ArrayList<Member> list = (ArrayList<Member>) dao.findAll();
+		ArrayList<MemberDto> dlist = new ArrayList<>();
+		for(Member vo:list) {
+			dlist.add(new MemberDto(vo.getId(), vo.getPwd(), vo.getStorename(), vo.getName(), vo.getEmail(), vo.getPhone()));
+		}
+		return dlist;
+	}
+	
+}
